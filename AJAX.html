@@ -1,0 +1,47 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+
+    
+    <script>
+    const request = new  XMLHttpRequest();
+
+    request.addEventListener("load",e=>
+    {
+       console.log(e.target);
+       const repos = JSON.parse(e.target.response);
+       console.log(repos);
+
+       const data = repos.map(repo =>{
+           return {
+               name:repo.name,
+               url:repo['html_url'],
+               stars:repo['stargazers_count']
+           }
+       })
+
+       const ol = document.createElement("ol");
+
+       console.log(data);
+
+       const htmlString = data.map(item => {
+  return `<li> 
+  <a href="${item.url}">${item.name} (${item.stars} stars)</a>
+  </li>`
+}).join('')
+
+      ol.innerHTML = htmlString;
+      document.body.appendChild(ol);
+    });
+
+    request.open('get','https://api.github.com/users/joelhernandezvasquez/repos');
+    request.send();
+
+    </script>
+</body>
+
+</html>
